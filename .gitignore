@@ -137,4 +137,5 @@ dmypy.json
 # Virtual environment for VScode
 
 ussd
+ngrok.exe
 

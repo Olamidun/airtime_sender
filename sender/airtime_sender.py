@@ -2,8 +2,10 @@ import requests
 import os
 import dotenv
 from .models import AirtimeUser
+from pycoingecko import CoinGeckoAPI
 
 
+coin_gecko = CoinGeckoAPI()
 
 dotenv.load_dotenv()
 def fetch_list_of_banks():
@@ -12,8 +14,8 @@ def fetch_list_of_banks():
     print(secret_key)
     headers = {
         "Accept": "text/plain",
-        "AppId": "5fc144c4318b66003e7644c2",
-        "Authorization": "prod_sk_O5ZaI2rKmA1u4niXtJWUeJsoQ"
+        "AppId": app_id,
+        "Authorization": secret_key
     }
     # url = f'https://sandbox.dojah.io/api/v1/kyc/phone_number/basic?phone_number={phone_number}'
 
@@ -58,3 +60,9 @@ def send_airtime(amount, destination):
         'status': True,
         'data': response.text
     }
+
+
+def get_cryptocurrency_price(ids, currencies):
+    coin_gecko = CoinGeckoAPI()
+    price = coin_gecko.get_price(ids=ids, vs_currencies=currencies)
+    return price
