@@ -1,4 +1,5 @@
 from django.shortcuts import render, HttpResponse
+from django.urls.base import resolve
 from airtime_sender import get_cryptocurrency_price
 
 # Create your views here.
@@ -25,7 +26,7 @@ def crypto_ussd_callback(request):
                 response += "1. bitcoin\n"
                 response += "2. ethereum\n"
                 response += "3. litecoin\n"
-                response += "4. shiba-INU\n"
+                response += "4. shiba-INU\n" # confirm the id to be shiba-INU
                 response += "5. BNB" # id = binancecoin
                 return HttpResponse(response)
             elif input[0] == "2":
@@ -47,6 +48,7 @@ def crypto_ussd_callback(request):
                 pass
         elif len(input) == 3:
             if input[0] == "1":
+                # BITCOIN
                 if input[1] == "1":
                     if input[2] == "1":
                         result = get_cryptocurrency_price('bitcoin', 'ngn')
@@ -60,18 +62,71 @@ def crypto_ussd_callback(request):
                         result = get_cryptocurrency_price('bitcoin', 'eur')
                         response = f"END Current price of Bitcoin in Euro is {result['bitcoin']['eur']}"
                         return HttpResponse(response)
+                # ETHEREUM
                 elif input[1] == "2":
                     if input[2] == "1":
                         result = get_cryptocurrency_price('ethereum', 'ngn')
-                        response = f"END Current price of Ethereum in Nigerian Naira is {result['bitcoin']['ngn']}"
+                        response = f"END Current price of Ethereum in Nigerian Naira is {result['ehtereum']['ngn']}"
                         return HttpResponse(response)
                     elif input[2] == "2":
                         result = get_cryptocurrency_price('ethereum', 'usd')
-                        response = f"END Current price of Ethereum in US Dollars is {result['bitcoin']['usd']}"
+                        response = f"END Current price of Ethereum in US Dollars is {result['ethereum']['usd']}"
                         return HttpResponse(response)
                     elif input[2] == "3":
                         result = get_cryptocurrency_price('ethereum', 'eur')
-                        response = f"END Current price of Ethereum in Euro is {result['bitcoin']['eur']}"
+                        response = f"END Current price of Ethereum in Euro is {result['ethereum']['eur']}"
                         return HttpResponse(response)
-
+                # LITECOIN
+                elif input[1] == "3":
+                    if input[2] == "1":
+                        result = get_cryptocurrency_price('litecoin', 'ngn')
+                        response = f"END Current price of LiteCoin in Nigerian Naira is {result['litecoin']['ngn']}"
+                        return HttpResponse(response)
+                    elif input[2] == "2":
+                        result = get_cryptocurrency_price('litecoin', 'usd')
+                        response = f"END Current price of litecoin in US Dollars is {result['litecoin']['usd']}"
+                        return HttpResponse(response)
+                    elif input[2] == "3":
+                        result = get_cryptocurrency_price('litecoin', 'eur')
+                        response = f"END Current price of litecoin in Euro is {result['litecoin']['eur']}"
+                        return HttpResponse(response)
+                # SHIBA-INU
+                elif input[1] == "4":
+                    if input[2] == "1":
+                        result = get_cryptocurrency_price('shiba-INU', 'ngn')
+                        response = f"END Current price of Shiba-INU in Nigerian Naira is {result['shiba-INU']['ngn']}"
+                        return HttpResponse(response)
+                    elif input[2] == "2":
+                        result = get_cryptocurrency_price('shiba-INU', 'usd')
+                        response = f"END Current price of Shiba-INU in US Dollars is {result['shiba-INU']['usd']}"
+                        return HttpResponse(response)
+                    elif input[2] == "3":
+                        result = get_cryptocurrency_price('shiba-INU', 'eur')
+                        response = f"END Current price of Shiba-INU in Euro is {result['shiba-INU']['eur']}"
+                        return HttpResponse(response)
+                # BNB
+                elif input[1] == "5":
+                    if input[2] == "1":
+                        result = get_cryptocurrency_price('binancecoin', 'ngn')
+                        response = f"END Current price of BNB in Nigerian Naira is {result['binancecoin']['ngn']}"
+                        return HttpResponse(response)
+                    elif input[2] == "2":
+                        result = get_cryptocurrency_price('binancecoin', 'usd')
+                        response = f"END Current price of BNB in US Dollars is {result['binancecoin']['usd']}"
+                        return HttpResponse(response)
+                    elif input[2] == "3":
+                        result = get_cryptocurrency_price('binancecoin', 'eur')
+                        response = f"END Current price of BNB in Euro is {result['binancecoin']['eur']}"
+                        return HttpResponse(response)
+                    else:
+                        response = "END Invalid input. Please try again"
+                        return HttpResponse(response)
+                else:
+                    response = "END Invalid input. Please try again"
+                    return HttpResponse(response)
+            elif input[0] == "2":
+                pass
+            else:
+                response = "END Invalid input. Please try again."
+                return HttpResponse(response)
         return HttpResponse(response)
