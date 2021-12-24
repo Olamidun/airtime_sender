@@ -1,6 +1,5 @@
-from django.shortcuts import render, HttpResponse
-from django.urls.base import resolve
-from airtime_sender import get_cryptocurrency_price
+from django.shortcuts import HttpResponse
+from airtime_sender import  currency_exchange_rate, get_cryptocurrency_price
 
 # Create your views here.
 
@@ -18,7 +17,7 @@ def crypto_ussd_callback(request):
         if text == '':
             response = "CON Welcome, kindly choose what you want to do\n"
             response += "1. To check price of cryptocurrency in your preferred currency\n"
-            response += "2. To check the list of 10 nigerian banks\n"
+            response += "2. To check the exchange rate of your currency with other currencies\n"
             return HttpResponse(response)
         if len(input) == 1:
             if input[0] == "1":
@@ -30,7 +29,11 @@ def crypto_ussd_callback(request):
                 response += "5. BNB" # id = binancecoin
                 return HttpResponse(response)
             elif input[0] == "2":
-                pass
+                response += "CON Choose the currency whose exchange rate you want to know."
+                response += "1. Nigerian Naira NGN\n"
+                response += "2. US Dollars USD\n"
+                response += "3. Euro EUR\n"
+                return HttpResponse(response)
             else:
                 response = "END Invalid input. Must either be 1 or 2."
                 return HttpResponse(response)
@@ -45,7 +48,14 @@ def crypto_ussd_callback(request):
                 else:
                     response = "END. Invalid input. Please try again"
             elif input[0] == "2":
-                pass
+                possible_input = ['1', '2', '3', '4']
+                
+                if input[1] in possible_input:
+                    response = "CON Choose the currency" # gotta find better word for this
+                    response += "1. Nigerian Naira (NGN)"
+                    response += "2. US Dollars (USD)"
+                    response += "3. Euro (EUR)"
+                    return HttpResponse(response)
         elif len(input) == 3:
             if input[0] == "1":
                 # BITCOIN
@@ -125,7 +135,55 @@ def crypto_ussd_callback(request):
                     response = "END Invalid input. Please try again"
                     return HttpResponse(response)
             elif input[0] == "2":
-                pass
+                if input[1] == "1":
+                    if input[2] == "1":
+                        response = f"END You are checking exchange rate of Naira to Naira"
+                        return HttpResponse(response)
+                    elif input[2] == "2":
+                        result = currency_exchange_rate("NGN", "USD")
+                        response = f"END The current exchange rate of 1 Nigerian Naira to US Dollars is {result}"
+                        return HttpResponse(response)
+                    elif input[2] == "3":
+                        result = currency_exchange_rate("NGN", "EUR")
+                        response = f"END The current exchange rate of 1 Nigerian Naira to Euro is {result} "
+                        return HttpResponse(response)
+                    else:
+                        response = "END Invalid input"
+                        return HttpResponse(response)
+                elif input[1] == "2":
+                    if input[2] == "1":
+                        result = currency_exchange_rate("USD", "NGN")
+                        response = f"END The current exchange rate of 1 US Dollars to Nigerian Naira is {result} "
+                        return HttpResponse(response)
+                    elif input[2] == "2":
+                        response = f"END You are checking exchange rate of Naira to Naira"
+                        return HttpResponse(response)
+                    elif input[2] == "3":
+                        result = currency_exchange_rate("USD", "EUR")
+                        response = f"END The current exchange rate of 1 US Dollars to Euro is {result} "
+                        return HttpResponse(response)
+                    else:
+                        response = "END Invalid input"
+                        return HttpResponse(response)
+
+                elif input[1] == "3":
+                    if input[2] == "1":
+                        result = currency_exchange_rate("EUR", "NGN")
+                        response = f"END The current exchange rate of 1 Euro to Nigerian Naira is {result} "
+                        return HttpResponse(response)
+                    elif input[2] == "2":
+                        result = currency_exchange_rate("EUR", "USD")
+                        response = f"END The current exchange rate of 1 Euro to US Dollars is {result} "
+                        return HttpResponse(response)
+                    elif input[2] == "3":
+                        response = f"END You are checking exchange rate of Naira to Naira"
+                        return HttpResponse(response)
+                    else:
+                        response = "END Invalid input"
+                        return HttpResponse(response)
+                else:
+                    response = "END Invalid input"
+                    return HttpResponse(response)
             else:
                 response = "END Invalid input. Please try again."
                 return HttpResponse(response)
