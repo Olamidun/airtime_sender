@@ -1,14 +1,9 @@
 import requests
 import os
 import dotenv
-from .models import AirtimeUser
 from pycoingecko import CoinGeckoAPI
 
-
-coin_gecko = CoinGeckoAPI()
-
 dotenv.load_dotenv()
-
 
 def get_cryptocurrency_price(ids, currencies):
     coin_gecko = CoinGeckoAPI()
