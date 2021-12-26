@@ -1,5 +1,5 @@
 from django.shortcuts import HttpResponse
-from airtime_sender import  currency_exchange_rate, get_cryptocurrency_price
+from crypto_function import  currency_exchange_rate, get_cryptocurrency_price
 
 # Create your views here.
 
