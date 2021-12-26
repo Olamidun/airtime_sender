@@ -41,9 +41,9 @@ def crypto_ussd_callback(request):
                 possible_input = ['1', '2', '3', '4', '5']
                 if input[1] in possible_input:
                     response = "CON Choose the currency in which you want to know how much your choose cryptocurrency costs\n"
-                    response += "1. Nigerian Naira (NGN)"
-                    response += "2. US Dollars (USD)"
-                    response += "3. Euro (EUR)"
+                    response += "1. Nigerian Naira (NGN)\n"
+                    response += "2. US Dollars (USD)\n"
+                    response += "3. Euro (EUR)\n"
                 else:
                     response = "END. Invalid input. Please try again"
             elif input[0] == "2":
@@ -75,7 +75,7 @@ def crypto_ussd_callback(request):
                 elif input[1] == "2":
                     if input[2] == "1":
                         result = get_cryptocurrency_price('ethereum', 'ngn')
-                        response = f"END Current price of Ethereum in Nigerian Naira is {result['ehtereum']['ngn']}"
+                        response = f"END Current price of Ethereum in Nigerian Naira is {result['ethereum']['ngn']}"
                         return HttpResponse(response)
                     elif input[2] == "2":
                         result = get_cryptocurrency_price('ethereum', 'usd')
@@ -103,15 +103,15 @@ def crypto_ussd_callback(request):
                 elif input[1] == "4":
                     if input[2] == "1":
                         result = get_cryptocurrency_price('shiba-INU', 'ngn')
-                        response = f"END Current price of Shiba-INU in Nigerian Naira is {result['shiba-INU']['ngn']}"
+                        response = f"END Current price of Shiba-INU in Nigerian Naira is {result['shiba-inu']['ngn']}"
                         return HttpResponse(response)
                     elif input[2] == "2":
                         result = get_cryptocurrency_price('shiba-INU', 'usd')
-                        response = f"END Current price of Shiba-INU in US Dollars is {result['shiba-INU']['usd']}"
+                        response = f"END Current price of Shiba-INU in US Dollars is {result['shiba-inu']['usd']}"
                         return HttpResponse(response)
                     elif input[2] == "3":
                         result = get_cryptocurrency_price('shiba-INU', 'eur')
-                        response = f"END Current price of Shiba-INU in Euro is {result['shiba-INU']['eur']}"
+                        response = f"END Current price of Shiba-INU in Euro is {result['shiba-inu']['eur']}"
                         return HttpResponse(response)
                 # BNB
                 elif input[1] == "5":
