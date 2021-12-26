@@ -30,10 +30,8 @@ def crypto_ussd_callback(request):
                 response += "5. BNB" # id = binancecoin
                 return HttpResponse(response)
             elif input[0] == "2":
-                response += "CON Choose the currency whose exchange rate you want to know."
-                response += "1. Nigerian Naira NGN\n"
-                response += "2. US Dollars USD\n"
-                response += "3. Euro EUR\n"
+                response += "CON Choose the currency whose exchange rate you want to know.\n"
+                response += "1. US Dollars USD\n"
                 return HttpResponse(response)
             else:
                 response = "END Invalid input. Must either be 1 or 2."
@@ -52,10 +50,10 @@ def crypto_ussd_callback(request):
                 possible_input = ['1', '2', '3', '4']
                 
                 if input[1] in possible_input:
-                    response = "CON Choose the currency" # gotta find better word for this
-                    response += "1. Nigerian Naira (NGN)"
-                    response += "2. US Dollars (USD)"
-                    response += "3. Euro (EUR)"
+                    response = "CON Choose the currency\n" # gotta find better word for this
+                    response += "1. Nigerian Naira (NGN)\n"
+                    response += "2. US Dollars (USD)\n"
+                    response += "3. Euro (EUR)\n"
                     return HttpResponse(response)
         elif len(input) == 3:
             if input[0] == "1":
@@ -138,46 +136,16 @@ def crypto_ussd_callback(request):
             elif input[0] == "2":
                 if input[1] == "1":
                     if input[2] == "1":
-                        response = f"END You are checking exchange rate of Naira to Naira"
-                        return HttpResponse(response)
-                    elif input[2] == "2":
-                        result = currency_exchange_rate("NGN", "USD")
-                        response = f"END The current exchange rate of 1 Nigerian Naira to US Dollars is {result}"
-                        return HttpResponse(response)
-                    elif input[2] == "3":
-                        result = currency_exchange_rate("NGN", "EUR")
-                        response = f"END The current exchange rate of 1 Nigerian Naira to Euro is {result} "
-                        return HttpResponse(response)
-                    else:
-                        response = "END Invalid input"
-                        return HttpResponse(response)
-                elif input[1] == "2":
-                    if input[2] == "1":
                         result = currency_exchange_rate("USD", "NGN")
-                        response = f"END The current exchange rate of 1 US Dollars to Nigerian Naira is {result} "
+                        response = f"END The current exchange rate of 1 Nigerian Naira to US Dollars is {result}"
+                        response = f"END You are checking exchange rate of Naira to Naira"
                         return HttpResponse(response)
                     elif input[2] == "2":
-                        response = f"END You are checking exchange rate of Naira to Naira"
+                        response = f"END You are checking exchange rate of USD to USD"
                         return HttpResponse(response)
                     elif input[2] == "3":
                         result = currency_exchange_rate("USD", "EUR")
-                        response = f"END The current exchange rate of 1 US Dollars to Euro is {result} "
-                        return HttpResponse(response)
-                    else:
-                        response = "END Invalid input"
-                        return HttpResponse(response)
-
-                elif input[1] == "3":
-                    if input[2] == "1":
-                        result = currency_exchange_rate("EUR", "NGN")
-                        response = f"END The current exchange rate of 1 Euro to Nigerian Naira is {result} "
-                        return HttpResponse(response)
-                    elif input[2] == "2":
-                        result = currency_exchange_rate("EUR", "USD")
-                        response = f"END The current exchange rate of 1 Euro to US Dollars is {result} "
-                        return HttpResponse(response)
-                    elif input[2] == "3":
-                        response = f"END You are checking exchange rate of Naira to Naira"
+                        response = f"END The current exchange rate of 1 Nigerian Naira to Euro is {result} "
                         return HttpResponse(response)
                     else:
                         response = "END Invalid input"
