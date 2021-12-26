@@ -1,8 +1,9 @@
 from django.shortcuts import HttpResponse
 from .crypto_function import  currency_exchange_rate, get_cryptocurrency_price
+from django.views.decorators.csrf import csrf_exempt
 
 # Create your views here.
-
+@csrf_exempt
 def crypto_ussd_callback(request):
     # if
     if request.method == 'POST':
