@@ -137,15 +137,14 @@ def crypto_ussd_callback(request):
                 if input[1] == "1":
                     if input[2] == "1":
                         result = currency_exchange_rate("USD", "NGN")
-                        response = f"END The current exchange rate of 1 Nigerian Naira to US Dollars is {result}"
-                        response = f"END You are checking exchange rate of Naira to Naira"
+                        response = f"END The current exchange rate of 1 US Dollars to Nigerian Naira is {result}"
                         return HttpResponse(response)
                     elif input[2] == "2":
                         response = f"END You are checking exchange rate of USD to USD"
                         return HttpResponse(response)
                     elif input[2] == "3":
                         result = currency_exchange_rate("USD", "EUR")
-                        response = f"END The current exchange rate of 1 Nigerian Naira to Euro is {result} "
+                        response = f"END The current exchange rate of 1 US Dollars to Euro is {result} "
                         return HttpResponse(response)
                     else:
                         response = "END Invalid input"
