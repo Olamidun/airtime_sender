@@ -18,6 +18,6 @@ def currency_exchange_rate(base_currency, to_currency):
     app_id = os.getenv('app_id')
 
     response = requests.get(f"{url}/?app_id={app_id}&base={base_currency}&symbols={to_currency}")
-    return response.json()
+    return response.json()['rates'][to_currency]
 
-    # ['rates'][to_currency]
+    # 
