@@ -13,7 +13,8 @@ According to [wikipedia](https://en.wikipedia.org/wiki/Unstructured_Supplementar
 
 I am going to start by setting up a django project. I am going to run the following commands to create a django project.
 
-- Run `python -m venv ussd_tut` and `.\ussd_tut\scripts\activate` to create and activate virtual environment respectively - where ussd_tut is the name of my virtual environment. For linux, `source ussd_tut/bin/activate` will activate the virtual environment
+- Run `python -m venv ussd_tut` and `.\ussd_tut\scripts\activate` to create and activate virtual environment respectively - where ussd_tut is the name of my virtual environment. For linux, `source ussd_tut/bin/activate` will activate the virtual environment.
+- run `pip install django` to install Django.
 - In the same folder where I created virtual environment, I will run `django-admin startproject ussd_project` to create a django project.
 - After that, I will run `django-admin startapp ussd_app` to create a django app.
 
@@ -31,6 +32,31 @@ INSTALLED_APPS = [
 ]
 ```
 
-I will be using a [CoinGecko's](https://www.coingecko.com/en) official python [SDK](https://github.com/man-c/pycoingecko) to fetch the price of the cryptocurrencies and for the exchange rate functionality, I will be using [Openexchnagerate](https://openexchangerates.org/api/latest.json) API. 
+I will be using a [CoinGecko's](https://www.coingecko.com/en) official python [SDK](https://github.com/man-c/pycoingecko) to fetch the price of the cryptocurrencies and for the exchange rate functionality, I will be using [Openexchnagerate](https://openexchangerates.org/api/latest.json) API.
+
+Before I start writing code, I am going to install some libraries like requests (for making HTTP requests), python-dotenv(for handling .env files), and pycoingecko (The SDK I talked about above). So I am going to run `pip install requests python-dotenv pycoingecko` to install these libraries.
+
+In the app folder, I am going to create a file called `currency_function.py` (You can name yours anything). Inside this file is where I will create the functions to handle the functionalities of the USSD application. In the file, enter the code below
+
+```
+import requests
+import os
+import dotenv
+from pycoingecko import CoinGeckoAPI
+
+dotenv.load_dotenv()
+
+def get_cryptocurrency_price(ids, currencies):
+    coin_gecko = CoinGeckoAPI()
+    price = coin_gecko.get_price(ids=ids, vs_currencies=currencies)
+    return price
+
+
+def currency_exchange_rate(base_currency, to_currency):
+    url = "https://openexchangerates.org/api/latest.json"
+    app_id = os.getenv('app_id')
+    response = requests.get(f"{url}/?app_id={app_id}&base={base_currency}&symbols={to_currency}")
+    return response.json()['rates'][to_currency]
+```
 
 
