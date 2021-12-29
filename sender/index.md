@@ -1,6 +1,6 @@
 # How To Create A USSD Application Using Python And Django.
 
-In this article, I will be showing you how to create a USSD application using Python and Django. I will be doing so by building a USSD application that retrieves the price of popular cryptocurrencies in popular fiat currencies, in addition to this, the USSD will be able to tell us the current exchange rate of US dollars to few other currencies.
+In this article, I will be showing you how to create a USSD application using Python and Django. I will be doing so by building a USSD application that retrieves the price of popular cryptocurrencies in popular fiat currencies, in addition to this, the application will also be able to tell us the current exchange rate of US dollars to few other currencies.
 
 ## Prerequisite
 
@@ -30,5 +30,7 @@ INSTALLED_APPS = [
     'ussd_app',
 ]
 ```
+
+I will be using a [CoinGecko's](https://www.coingecko.com/en) official python [SDK](https://github.com/man-c/pycoingecko) to fetch the price of the cryptocurrencies and for the exchange rate functionality, I will be using [Openexchnagerate](https://openexchangerates.org/api/latest.json) API. 
 
 
