@@ -70,3 +70,17 @@ def currency_exchange_rate(base_currency, to_currency):
 
 ```
 
+### Explanation:
+The function takes in base_currency and to_currency as parameters, i.e If you want to know the exchange rate of US dollars to Nigerian naira, US dollars is the base_currency and Nigerian Naira is the to_currency. Because I am using the free version of the API, only USD is allowed to be the base_currency.
+Like I said, I will be using openexchangerates API for this functionality. The endpoint to get the exchange rate is assigned to the `url` variable. The API requires an application ID (You can get yours by creating an account with openexchangerates) when making a request, since my app ID is a sensitive information and I do not want anybody else to know about it, I have saved it in a .env file and retrieved it with `os.getenv('app_id)`. This .env file will be created shortly. 
+To make HTTP request to openexchangerate's API, I used the requests library that I installed earlier on, since the HTTP request to get exchange rate for currency is a GET request, I am using `requests.get()` and passing the base url along with the my app ID, base_currency and to_currency as query parameters. The response of the HTTP request to the API is a json response, so I extracted the value of the the exchange rate with `response.json()['rates'][to_currency]`. This will also be used in the views file.
+
+Before I proceed, I will create my .env file by simply going into my project root directory and create a file named ".env", it is important the file is named ".env", else it won't work. After creating, copy your app ID on openexchangerate and paste it into the .env file. Your file should look like in the picture below:
+
+![env screenshot](/sender/env-screenshot.png)
+
+The redacted part is the value of your app ID.
+
+
+Now, I am going to write the code for the USSD feature, to do this, I will be using a platform call [africastalking](https://africastalking.com/), go to africastalking and create an account
+
