@@ -36,7 +36,7 @@ I will be using a [CoinGecko's](https://www.coingecko.com/en) official python [S
 
 Before I start writing code, I am going to install some libraries like requests (for making HTTP requests), python-dotenv(for handling .env files), and pycoingecko (The SDK I talked about above). So I am going to run `pip install requests python-dotenv pycoingecko` to install these libraries.
 
-In the app folder, I am going to create a file called `currency_function.py` (You can name yours anything). Inside this file is where I will create the functions to handle the functionalities of the USSD application. In the file, enter the code below
+In the app folder, I am going to create a file called `crypto_function.py` (You can name yours anything). Inside this file is where I will create the functions to handle the functionalities of the USSD application. In the file, enter the code below
 
 ```
 import requests
@@ -50,13 +50,23 @@ def get_cryptocurrency_price(ids, currencies):
     coin_gecko = CoinGeckoAPI()
     price = coin_gecko.get_price(ids=ids, vs_currencies=currencies)
     return price
+```
 
+### Explanation: 
+I imported the libraries I installed earlier on. `dotenv.load_dotenv()` is to get environment variables from .env file which I will create shortly. After that, I declared a function that retrieves cryptocurrency prices using the pycoingecko SDK and named it `get_cryptocurrency_price`. This function takes in two parameters; the id of the cryptocurrency and the currency we want to check the current price in. The next thing I did was instantiate the `CoinGeckoAPI` class that I imported above so I can access the various cryptocurrency methods including `get_price` method which is used to get the current price of cryptocurrencies in various fiat currencies. `The get_price` method returns a json response of the current price of the cryptocurrency specified in the fiat currency specified. Below is a screenshot of the price of bitcoin in Nigerian Naira
 
+![response screenshot](/sender/bitcoin_response.png)
+
+I am going to use this function in the views file later.
+
+To handle the exchange rate functionality, I am going to create another function just under `get_cryptocurrency_price` function. The code for that function is below:
+
+```
 def currency_exchange_rate(base_currency, to_currency):
     url = "https://openexchangerates.org/api/latest.json"
     app_id = os.getenv('app_id')
     response = requests.get(f"{url}/?app_id={app_id}&base={base_currency}&symbols={to_currency}")
     return response.json()['rates'][to_currency]
-```
 
+```
 
