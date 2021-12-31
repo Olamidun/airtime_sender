@@ -40,12 +40,13 @@ def crypto_ussd_callback(request):
             if input[0] == "1":
                 possible_input = ['1', '2', '3', '4', '5']
                 if input[1] in possible_input:
-                    response = "CON Choose the currency in which you want to know how much your choose cryptocurrency costs\n"
+                    response = "CON Choose the currency in which you want to know how much your chosen cryptocurrency costs\n"
                     response += "1. Nigerian Naira (NGN)\n"
                     response += "2. US Dollars (USD)\n"
                     response += "3. Euro (EUR)\n"
                 else:
                     response = "END. Invalid input. Please try again"
+                    return HttpResponse(response)
             elif input[0] == "2":
                 possible_input = ['1', '2', '3', '4']
                 
@@ -55,13 +56,16 @@ def crypto_ussd_callback(request):
                     response += "2. US Dollars (USD)\n"
                     response += "3. Euro (EUR)\n"
                     return HttpResponse(response)
+                else:
+                    response = "END. Invalid input. Please try again"
+                    return HttpResponse(response)
         elif len(input) == 3:
             if input[0] == "1":
                 # BITCOIN
                 if input[1] == "1":
                     if input[2] == "1":
                         result = get_cryptocurrency_price('bitcoin', 'ngn')
-                        response = f"END Current price of Bitcoin in Nigerian Naira is {result['bitcoin']['ngn']}"
+                        Notice how I started the response with the "END" keyword to indicate that I want that session to end after users have been shown the price of the cryptocurrency they choose.
                         return HttpResponse(response)
                     elif input[2] == "2":
                         result = get_cryptocurrency_price('bitcoin', 'usd')
