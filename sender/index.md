@@ -11,6 +11,8 @@ Without futher ado, let us get started.
 
 According to [wikipedia](https://en.wikipedia.org/wiki/Unstructured_Supplementary_Service_Data), USSD stands for Unstructured Supplementary Service Data. It is a communications protocol used by GSM cellular telephones to communicate with the mobile network operator's computers. The computer's response is sent back to the phone, generally in a basic format that can easily be seen on the phone display.
 
+
+ ## Should I still remove this?
 I am going to start by setting up a django project. I am going to run the following commands to create a django project.
 
 - Run `python -m venv ussd_tut` and `.\ussd_tut\scripts\activate` to create and activate virtual environment respectively - where ussd_tut is the name of my virtual environment. For linux, `source ussd_tut/bin/activate` will activate the virtual environment.
@@ -122,4 +124,59 @@ def crypto_ussd_callback(request):
 
 The first three import lines are to import the things I need. The functions I created in `crypto_function.py` file, `csrf_exempt` decorator to bypass CSRF security mechanism Django provides, and HttpResponse.
 
-Since africastalking sends a POST request to the callback URL I supplied, and the view associated with the callback URL is the one I am working on, I have to check if the request coming in is a POST request so I will be able to get the POST parameters sent along with the request
+Since africastalking sends a POST request to the callback URL I supplied, and the view associated with the callback URL is the one I am working on, I have to check if the request coming in is a POST request so I will be able to get the POST parameters sent along with the request. I used `request.POST.get('<parameter_name>')` to get the parameters. As explained above, the text parameter is basically string of user inputs concatenated using the "*" symbol, so I split those inputs into elements in a list using `text.split("*")` so I can know which input was entered at which level. 
+
+If the code was dialed for the first time and no input has been supplied then the text parameter will be empty, so I am checking if the text parameter is empty, if it is, a menu should be displayed to the user welcoming them and asking them to choose either 1 or 2 to indicate which action they want to perform. It is important to start the response (read menu) with the "CON" keyword if input will be collected from the user, else if you just want to display result say value of bitcoin price, start the response with the "END" keyword to end the session.
+
+If a user enters 1 or 2, the value of text parameter will be what the user entered, therefore, text will become "1" if the user entered 1 or "2" if the user entered two and the input variable will become ["1"] or ["2"] depending on the user input. 
+
+Step A. Since value of input is a list, I can grab the element(s) inside it and run an if check to know what the user entered. So just under the first if block, I am going to enter the code below:
+
+```
+if len(input) == 1:
+    if input[0] == "1":
+        response = "CON Choose the cryptocurrency whose price you want to know\n"
+        response += "1. bitcoin\n"
+        response += "2. ethereum\n"
+        response += "3. litecoin\n"
+        response += "4. shiba-INU\n" # confirm the id to be shiba-INU
+        response += "5. BNB" # id = binancecoin
+        return HttpResponse(response)
+    elif input[0] == "2":
+        response += "CON Choose the currency whose exchange rate you want to know.\n"
+        response += "1. US Dollars USD\n"
+        return HttpResponse(response)
+    else:
+        response = "END Invalid input. Must either be 1 or 2."
+        return HttpResponse(response)
+```
+
+## Explanation:
+
+This if block is basically just confirming if this is the user's first input on dialing the code. If it is, input which is a list will have just one element, hence having its length to be 1. I then check what the user input (the first and only element in the list) is, if it is 1, it means they want to check the current price of crpytocurrency and I subsequently ask them to choose a number corresponding to the cryptocurrency whose current price they want to know. If the user input is 2, it means they want to know the exchange rate and I subsequently ask them to choose the number corresponding to the currency they want to use as the base currency. Notice how I started the response (read menu) with the "CON" keyword because I am asking them for input. Whatever the user picks will be appended to the text parameter, so the text parameter will become "1* 1" if they want to know the current price of bitcoin and "2*1" if they want to know the exchange rate of dollar. As you can probably guess, input will become ["1", "1"] if it was the first case and ["2", "1"] if it was the second case.
+
+Just like I did in Step A, I will also check the first two elements in the list so I can know what the user inputs are. So under the second if block, I am going to enter the code below:
+
+```
+elif len(input) == 2:
+    if input[0] == "1":
+        possible_input = ['1', '2', '3', '4', '5']
+        if input[1] in possible_input:
+            response = "CON Choose the currency in which you want to know how much your choose cryptocurrency costs\n"
+            response += "1. Nigerian Naira (NGN)\n"
+            response += "2. US Dollars (USD)\n"
+            response += "3. Euro (EUR)\n"
+        else:
+            response = "END. Invalid input. Please try again"
+    elif input[0] == "2":
+        possible_input = ['1', '2', '3', '4']
+        
+        if input[1] in possible_input:
+            response = "CON Choose the currency\n" # gotta find better word for this
+            response += "1. Nigerian Naira (NGN)\n"
+            response += "2. US Dollars (USD)\n"
+            response += "3. Euro (EUR)\n"
+            return HttpResponse(response)
+```
+
+## Explanation
