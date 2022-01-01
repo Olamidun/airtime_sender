@@ -453,7 +453,7 @@ def crypto_ussd_callback(request):
 
 I am going to add my view function to my urls.py file and then deploy it on heroku, after which I will test it to ensure everything is working fine.
 
-To test, I am going to update the callback URL I initially set on africastalking to my hosted url of my USSD application. If you don't know how to deploy a Django application to heroku, check out this [article]() to deploy your application to Heroku.
+To test, I am going to update the callback URL I initially set on africastalking to my hosted url of my USSD application. If you don't know how to deploy a Django application to heroku, check out this [article](https://www.analyticsvidhya.com/blog/2020/10/step-by-step-guide-for-deploying-a-django-application-using-heroku-for-free/) to deploy your application to Heroku.
 
 After deployment, copy the url that is associated with the view function created for USSD menu. My own url is [https://ussd-currency-exchange-rate.herokuapp.com/callback](https://ussd-currency-exchange-rate.herokuapp.com/callback) and paste it into the callback URL field that was initially filled with a random URL. This is the callback that willl be hit once a user dials your code, after successful.
 
@@ -461,7 +461,7 @@ Now on the side menubar on africastalking dashboard, I will click on launch simu
 
 ![Simulator Page](/sender/africastalking.png)
 
-Since I am a Nigerian, I will choose Nigeria and enter my phone number after which I will press launch and I will be redirected to this page:
+I will choose Nigeria and enter my Nigerian phone number after which I will press the launch button and I will be redirected to this page:
 
 ![USSD Homepage](/sender/ussd-homepage.png)
 
@@ -479,4 +479,23 @@ Sincce I want to check bitcoin's price, I will press 1 and the press enter and t
 
 I will press one to indicate I want to know the price in Naira and then press enter and the price of bitcoin in Nigerian Naira will be displayed:
 
-![Bitcoin price in naira](/sender/bitcoin-price-in-naira.png)
+![Bitcoin price in naira](/sender/bitcoin-price-in-nigerian-naira.png)
+
+To test the second functionality (exchange rate), I will be checking the exchange rate of dollar to naira.
+
+From the first menu, I am going to press 2 and this displays the menu to choose the base currency:
+
+![Exchange rate menu](/sender/exchange-rate-menu1.png)
+
+I will also press 1 and the menu to choose the "to currency" will be displayed:
+
+![Exchange rate menu 2](/sender/exchange-rate-menu2.png)
+
+I will subsequently press 1 to choose Nigerian Naira as my "to currency" and then the exchange rate will be displayed:
+
+![Exchange rate menu 3](/sender/exchange-rate-menu3.png)
+
+
+## Summary
+
+Building a USSD application is easy. What I did was split user inputs into a list and then use bunch of "if-else" statements to check the elements in the list so I can traverse the menus accordingly.
