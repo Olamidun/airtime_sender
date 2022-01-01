@@ -65,6 +65,7 @@ def crypto_ussd_callback(request):
                 if input[1] == "1":
                     if input[2] == "1":
                         result = get_cryptocurrency_price('bitcoin', 'ngn')
+                        response = f"END Current price of Bitcoin in US Dollars is {result['bitcoin']['usd']}"
                         return HttpResponse(response)
                     elif input[2] == "2":
                         result = get_cryptocurrency_price('bitcoin', 'usd')

@@ -355,7 +355,7 @@ def crypto_ussd_callback(request):
                 if input[1] == "1":
                     if input[2] == "1":
                         result = get_cryptocurrency_price('bitcoin', 'ngn')
-                        Notice how I started the response with the "END" keyword to indicate that I want that session to end after users have been shown the price of the cryptocurrency they choose.
+                        response = f"END Current price of Bitcoin in US Dollars is {result['bitcoin']['usd']}"
                         return HttpResponse(response)
                     elif input[2] == "2":
                         result = get_cryptocurrency_price('bitcoin', 'usd')
