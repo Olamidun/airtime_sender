@@ -1,6 +1,6 @@
 # How To Create A USSD Application Using Python And Django.
 
-In this article, I will be showing you how to create a USSD application using Python and Django. I will be doing so by building a USSD application that retrieves the price of popular cryptocurrencies in popular fiat currencies, in addition to this, the application will also be able to tell us the current exchange rate of US dollars to few other currencies.
+In this article, I will be showing you how to create a USSD application using Python and Django. I will be doing so by building a USSD application that retrieves the price of couple of cryptocurrencies in popular fiat currencies, in addition to this, the application will also be able to tell us the current exchange rate of US dollars to few other currencies.
 
 ## Prerequisite
 
@@ -12,33 +12,11 @@ Without futher ado, let us get started.
 According to [wikipedia](https://en.wikipedia.org/wiki/Unstructured_Supplementary_Service_Data), USSD stands for Unstructured Supplementary Service Data. It is a communications protocol used by GSM cellular telephones to communicate with the mobile network operator's computers. The computer's response is sent back to the phone, generally in a basic format that can easily be seen on the phone display.
 
 
- ## Should I still remove this?
-I am going to start by setting up a django project. I am going to run the following commands to create a django project.
+I will be using a [CoinGecko's](https://www.coingecko.com/en) official Python [SDK](https://github.com/man-c/pycoingecko) to fetch the price of the cryptocurrencies and for the exchange rate functionality, I will be using [Openexchangerate's](https://openexchangerates.org/api/latest.json) API.
 
-- Run `python -m venv ussd_tut` and `.\ussd_tut\scripts\activate` to create and activate virtual environment respectively - where ussd_tut is the name of my virtual environment. For linux, `source ussd_tut/bin/activate` will activate the virtual environment.
-- run `pip install django` to install Django.
-- In the same folder where I created virtual environment, I will run `django-admin startproject ussd_project` to create a django project.
-- After that, I will run `django-admin startapp ussd_app` to create a django app.
+Before I start writing code, I am going to install some libraries like requests (for making HTTP requests), python-dotenv(for handling .env files), and pycoingecko (The SDK I talked about above). So I will run `pip install requests python-dotenv pycoingecko` to install these libraries.
 
-On successful creation of the app, I will add the app to the `INSTALLED_APP` variable in my settings.py file so django can recognize it.
-
-```
-INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'ussd_app',
-]
-```
-
-I will be using a [CoinGecko's](https://www.coingecko.com/en) official python [SDK](https://github.com/man-c/pycoingecko) to fetch the price of the cryptocurrencies and for the exchange rate functionality, I will be using [Openexchnagerate](https://openexchangerates.org/api/latest.json) API.
-
-Before I start writing code, I am going to install some libraries like requests (for making HTTP requests), python-dotenv(for handling .env files), and pycoingecko (The SDK I talked about above). So I am going to run `pip install requests python-dotenv pycoingecko` to install these libraries.
-
-In the app folder, I am going to create a file called `crypto_function.py` (You can name yours anything). Inside this file is where I will create the functions to handle the functionalities of the USSD application. In the file, enter the code below
+In the app folder of my Django project, I am going to create a file called `crypto_function.py` (You can name yours anything). If you do not know how to create a django project, check out Django's [documentation](https://docs.djangoproject.com/en/4.0/intro/tutorial01/). Inside this file is where I will create the functions to handle the functionalities of the USSD application. In the file, enter the code below
 
 ```
 import requests
@@ -56,7 +34,7 @@ def get_cryptocurrency_price(ids, currencies):
 
 ### Explanation:
 
-I imported the libraries I installed earlier on. `dotenv.load_dotenv()` is to get environment variables from .env file which I will create shortly. After that, I declared a function that retrieves cryptocurrency prices using the pycoingecko SDK and named it `get_cryptocurrency_price`. This function takes in two parameters; the id of the cryptocurrency and the currency we want to check the current price in. The next thing I did was instantiate the `CoinGeckoAPI` class that I imported above so I can access the various cryptocurrency methods including `get_price` method which is used to get the current price of cryptocurrencies in various fiat currencies. `The get_price` method returns a json response of the current price of the cryptocurrency specified in the fiat currency specified. Below is a screenshot of the price of bitcoin in Nigerian Naira
+I imported the libraries I installed earlier on. `dotenv.load_dotenv()` is to get environment variables from .env file which I will create shortly. After that, I created a function that retrieves cryptocurrency prices using the pycoingecko SDK and named it `get_cryptocurrency_price`. This function takes in two arguments; the id of the cryptocurrency and the currency we want to check the current price in. The next thing I did was instantiate the `CoinGeckoAPI` class that I imported above. The class has various cryptocurrency methods I can access including `get_price` method which is used to get the current price of cryptocurrencies in various fiat currencies. `The get_price` method returns a json response of the current price of the cryptocurrency specified in the fiat currency specified. Below is a screenshot of the price of bitcoin in Nigerian Naira
 
 ![response screenshot](/sender/bitcoin_response.png)
 
@@ -75,7 +53,7 @@ def currency_exchange_rate(base_currency, to_currency):
 
 ### Explanation:
 
-The function takes in base_currency and to_currency as parameters, i.e If you want to know the exchange rate of US dollars to Nigerian naira, US dollars is the base_currency and Nigerian Naira is the to_currency. Because I am using the free version of the API, only USD is allowed to be the base_currency.
+The function takes in base_currency and to_currency as arguments, i.e If you want to know the exchange rate of US dollars to Nigerian naira, US dollars is the base_currency and Nigerian Naira is the to_currency. Because I am using the free version of the API, only USD is allowed to be the base_currency.
 Like I said, I will be using openexchangerates API for this functionality. The endpoint to get the exchange rate is assigned to the `url` variable. The API requires an application ID (You can get yours by creating an account with openexchangerates) when making a request, since my app ID is a sensitive information and I do not want anybody else to know about it, I have saved it in a .env file and retrieved it with `os.getenv('app_id)`. This .env file will be created shortly.
 To make HTTP request to openexchangerate's API, I used the requests library that I installed earlier on, since the HTTP request to get exchange rate for currency is a GET request, I am using `requests.get()` and passing the base url along with the my app ID, base_currency and to_currency as query parameters. The response of the HTTP request to the API is a json response, so I extracted the value of the the exchange rate with `response.json()['rates'][to_currency]`. This will also be used in the views file.
 
@@ -139,8 +117,8 @@ if len(input) == 1:
         response += "1. bitcoin\n"
         response += "2. ethereum\n"
         response += "3. litecoin\n"
-        response += "4. shiba-INU\n" # confirm the id to be shiba-INU
-        response += "5. BNB" # id = binancecoin
+        response += "4. shiba-INU\n"
+        response += "5. BNB"
         return HttpResponse(response)
     elif input[0] == "2":
         response += "CON Choose the currency whose exchange rate you want to know.\n"
@@ -472,5 +450,19 @@ def crypto_ussd_callback(request):
                 response = "END Invalid input. Please try again."
                 return HttpResponse(response)
         return HttpResponse(response)
-```
 
+I am going to add my view function to my urls.py file and then deploy it on heroku, after which I will test it to ensure everything is working fine.
+
+To test, I am going to update the callback URL I initially set on africastalking to my hosted url of my USSD application. If you don't know how to deploy a Django application to heroku, check out this [article]() to deploy your application to Heroku.
+
+After deployment, copy the url that is associated with the view function created for USSD menu. My own url is [https://ussd-currency-exchange-rate.herokuapp.com/callback](https://ussd-currency-exchange-rate.herokuapp.com/callback) and paste it into the callback URL field that was initially filled with a random URL. This is the callback that willl be hit once a user dials your code, after successful.
+
+Now on the side menubar on africastalking dashboard, I will click on launch simulator to test the USSD application. Clicking on it which bring me to this page:
+
+![Simulator Page](/sender/africastalking.png)
+
+Since I am a Nigerian, I will choose Nigeria and enter my phone number after which I will press launch and I will be redirected to this page:
+
+![USSD Homepage](/sender/ussd-homepage.png)
+
+I am going to click on USSD tab and enter my USSD code after which 
