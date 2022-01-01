@@ -355,7 +355,7 @@ def crypto_ussd_callback(request):
                 if input[1] == "1":
                     if input[2] == "1":
                         result = get_cryptocurrency_price('bitcoin', 'ngn')
-                        response = f"END Current price of Bitcoin in US Dollars is {result['bitcoin']['usd']}"
+                        response = f"END Current price of Bitcoin in Nigerian Naira is {result['bitcoin']['ngn']}"
                         return HttpResponse(response)
                     elif input[2] == "2":
                         result = get_cryptocurrency_price('bitcoin', 'usd')
@@ -465,4 +465,18 @@ Since I am a Nigerian, I will choose Nigeria and enter my phone number after whi
 
 ![USSD Homepage](/sender/ussd-homepage.png)
 
-I am going to click on USSD tab and enter my USSD code after which 
+I am going to click on USSD tab and enter my USSD code after which I will be shown the first USSD menu I have built:
+
+![first menu](/sender/first-menu.png)
+
+So I am going to test the cryptocurrency price functionality by checking the price of cryptocurrency in Nigerian Naira. If I enter 1, I will be shown the second menu that asks me to choose cryptocurrency:
+
+![Second menu](/sender/second-menu.png)
+
+Sincce I want to check bitcoin's price, I will press 1 and the press enter and the third menu which asks for the fiat currency will be displayed:
+
+![Third menu](/sender/third-menu.png)
+
+I will press one to indicate I want to know the price in Naira and then press enter and the price of bitcoin in Nigerian Naira will be displayed:
+
+![Bitcoin price in naira](/sender/bitcoin-price-in-naira.png)
