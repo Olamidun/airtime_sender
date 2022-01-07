@@ -14,7 +14,9 @@ def crypto_ussd_callback(request):
         text = request.POST.get("text", "default")
         pop_index = None
         if pop_index:
+            print("There is a pop index")
             input = text.split('*').pop(pop_index)
+
         else:
             input = text.split('*')
         print(input)
