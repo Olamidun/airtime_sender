@@ -34,7 +34,10 @@ def crypto_ussd_callback(request):
                 response += "1. US Dollars USD\n"
                 return HttpResponse(response)
             else:
-                response = "END Invalid input. Must either be 1 or 2."
+                input.pop()
+                response = "CON Invalid input. Must either be 1 or 2. \n"
+                response += "1. To check price of cryptocurrency in your preferred currency\n"
+                response += "2. To check the exchange rate of your currency with other currencies\n"
                 return HttpResponse(response)
         elif len(input) == 2:
             if input[0] == "1":
