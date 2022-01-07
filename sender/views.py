@@ -23,6 +23,8 @@ def crypto_ussd_callback(request):
             return HttpResponse(response)
         if len(input) == 1:
             if input[0] == "1":
+                print(input)
+                print(len(input))
                 response = "CON Choose the cryptocurrency whose price you want to know\n"
                 response += "1. bitcoin\n"
                 response += "2. ethereum\n"
@@ -31,6 +33,8 @@ def crypto_ussd_callback(request):
                 response += "5. BNB" # id = binancecoin
                 return HttpResponse(response)
             elif input[0] == "2":
+                print(input)
+                print(len(input))
                 response = "CON Choose the currency whose exchange rate you want to know.\n"
                 response += "1. US Dollars USD\n"
                 return HttpResponse(response)
