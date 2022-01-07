@@ -12,24 +12,24 @@ def crypto_ussd_callback(request):
         service_code = request.POST.get("serviceCode", None)
         phone_number = request.POST.get("phoneNumber", None)
         text = request.POST.get("text", "default")
-        
-        pop_index = None
-        print(f"top level: {pop_index}")
-        # input = text.split('*')
-        if pop_index:
-            print("There is a pop index")
-            input = text.split('*').pop(pop_index)
+        # pop_index = None
+        # print(f"top level: {pop_index}")
+        input = text.split('*')
+        # if pop_index:
+        #     print("There is a pop index")
+        #     input = text.split('*').pop(pop_index)
+        #     print(input)
 
-        else:
-            input = text.split('*')
-        print(input)
+        # else:
+        #     input = text.split('*')
+        # print(input)
         response = ""
         if text == '':
             response = "CON Welcome, kindly choose what you want to do\n"
             response += "1. To check price of cryptocurrency in your preferred currency\n"
             response += "2. To check the exchange rate of your currency with other currencies\n"
             return HttpResponse(response)
-        if len(input) == 1 and pop_index is None:
+        if len(input) == 1: # and pop_index is None:
             if input[0] == "1":
                 print(input)
                 print(len(input))
@@ -47,11 +47,11 @@ def crypto_ussd_callback(request):
                 response += "1. US Dollars USD\n"
                 return HttpResponse(response)
             else:
-                pop_index = 0
-                print(pop_index)
-                response = "CON Invalid input. Try again\n"
-                response += "1. To check price of cryptocurrency in your preferred currency\n"
-                response += "2. To check exchange rate of your currency with other currencies"
+                # pop_index = 0
+                # print(pop_index)
+                response = "END Invalid input. Try again\n"
+                # response += "1. To check price of cryptocurrency in your preferred currency\n"
+                # response += "2. To check exchange rate of your currency with other currencies"
                 
                 return HttpResponse(response)
         elif len(input) == 2:
