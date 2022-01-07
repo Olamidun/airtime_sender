@@ -39,6 +39,7 @@ def crypto_ussd_callback(request):
                 return HttpResponse(response)
             else:
                 print(input.pop())
+                input = input
                 print(input)
                 print(len(input))
                 response = "CON Invalid input. Try again\n"
