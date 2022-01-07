@@ -13,8 +13,6 @@ def crypto_ussd_callback(request):
         text = request.POST.get("text", "default")
 
         input = text.split('*')
-        print(f"top level input: {input}")
-        print(f"top level length input: {len(input)}")
         response = ""
         if text == '':
             response = "CON Welcome, kindly choose what you want to do\n"
