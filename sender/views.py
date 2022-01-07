@@ -13,6 +13,7 @@ def crypto_ussd_callback(request):
         phone_number = request.POST.get("phoneNumber", None)
         text = request.POST.get("text", "default")
         pop_index = None
+        # input = text.split('*')
         if pop_index:
             print("There is a pop index")
             input = text.split('*').pop(pop_index)
@@ -44,10 +45,11 @@ def crypto_ussd_callback(request):
                 response += "1. US Dollars USD\n"
                 return HttpResponse(response)
             else:
-                pop_index = 0
-                response = "CON Invalid input. Try again\n"
-                response += "1. To check price of cryptocurrency in your preferred currency\n"
-                response += "2. To check exchange rate of your currency with other currencies"
+                if pop_index is None:
+                    pop_index = 0
+                    response = "CON Invalid input. Try again\n"
+                    response += "1. To check price of cryptocurrency in your preferred currency\n"
+                    response += "2. To check exchange rate of your currency with other currencies"
                 
                 return HttpResponse(response)
         elif len(input) == 2:
