@@ -5,14 +5,18 @@ from django.views.decorators.csrf import csrf_exempt
 # Create your views here.
 @csrf_exempt
 def crypto_ussd_callback(request):
+   
     # if
     if request.method == 'POST':
         session_id = request.POST.get("sessionId", None)
         service_code = request.POST.get("serviceCode", None)
         phone_number = request.POST.get("phoneNumber", None)
         text = request.POST.get("text", "default")
-
-        input = text.split('*')
+        pop_index = None
+        if pop_index:
+            input = text.split('*').pop(pop_index)
+        else:
+            input = text.split('*')
         print(input)
         response = ""
         if text == '':
@@ -38,10 +42,7 @@ def crypto_ussd_callback(request):
                 response += "1. US Dollars USD\n"
                 return HttpResponse(response)
             else:
-                print(input.pop())
-                input = input
-                print(input)
-                print(len(input))
+                pop_index = 0
                 response = "CON Invalid input. Try again\n"
                 response += "1. To check price of cryptocurrency in your preferred currency\n"
                 response += "2. To check exchange rate of your currency with other currencies"
