@@ -13,7 +13,8 @@ def crypto_ussd_callback(request):
         text = request.POST.get("text", "default")
 
         input = text.split('*')
-
+        print(f"top level input: {input}")
+        print(f"top level length input: {len(input)}")
         response = ""
         if text == '':
             response = "CON Welcome, kindly choose what you want to do\n"
@@ -30,14 +31,16 @@ def crypto_ussd_callback(request):
                 response += "5. BNB" # id = binancecoin
                 return HttpResponse(response)
             elif input[0] == "2":
-                response += "CON Choose the currency whose exchange rate you want to know.\n"
+                response = "CON Choose the currency whose exchange rate you want to know.\n"
                 response += "1. US Dollars USD\n"
                 return HttpResponse(response)
             else:
+                input.pop()
+                print(input)
                 response = "CON Invalid input. Must either be 1 or 2. \n"
                 response += "1. To check price of cryptocurrency in your preferred currency\n"
                 response += "2. To check the exchange rate of your currency with other currencies\n"
-                print(input)
+                
                 return HttpResponse(response)
         elif len(input) == 2:
             if input[0] == "1":
