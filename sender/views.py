@@ -13,6 +13,7 @@ def crypto_ussd_callback(request):
         text = request.POST.get("text", "default")
 
         input = text.split('*')
+        print(input)
         response = ""
         if text == '':
             response = "CON Welcome, kindly choose what you want to do\n"
@@ -37,7 +38,7 @@ def crypto_ussd_callback(request):
                 response += "1. US Dollars USD\n"
                 return HttpResponse(response)
             else:
-                input = input.pop()
+                print(input.pop())
                 print(input)
                 print(len(input))
                 response = "CON Invalid input. Try again\n"
